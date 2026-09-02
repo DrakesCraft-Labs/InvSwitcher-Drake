@@ -6,6 +6,7 @@
 
 ### Hardened 5-Modality Inventory, EnderChest, Health & XP Isolation Engine for Paper/Purpur 1.21.11
 
+[![RepoRanker](https://reporanker.com/badge/DrakesCraft-Labs/InvSwitcher-Drake)](https://reporanker.com/repos/DrakesCraft-Labs/InvSwitcher-Drake)
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-7C4DFF?logo=minecraft&logoColor=white)](https://papermc.io/)
 [![Purpur](https://img.shields.io/badge/Purpur-1.21.11-FFA000?logo=purpur)](https://purpurmc.org/)
 [![Java](https://img.shields.io/badge/Java-21%2F25-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
