@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/DrakesCraft-Labs/InvSwitcher-Drake/main/banner.svg" alt="InvSwitcher Drake Edition" width="100%">
+<img src="banner.svg" alt="InvSwitcher Drake Edition" width="100%">
 
 # ✦ InvSwitcher · DrakesCraft Edition ✦
 
