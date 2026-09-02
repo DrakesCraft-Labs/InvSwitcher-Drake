@@ -50,17 +50,15 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled=true)
     public void onWorldEnter(final PlayerChangedWorldEvent event) {
-        /*
-         * 0. From same world (e.g., nether/end) to same world.
-         * 1. From non-game world to non-game world
-         * 2. From non-game world to game world
-         * 3. From game world to non-game world
-         * 4. From game world to another game world
-         *
-         */
         World from = event.getFrom();
         World to = event.getPlayer().getWorld();
-        if (Util.sameWorld(to, from) || (!addon.getWorlds().contains(from) && !addon.getWorlds().contains(to))) {
+        if (Util.sameWorld(to, from)) {
+            return;
+        }
+        // If the storage keys for from and to are identical, no switch is needed (e.g. within same modality group)
+        String fromKey = addon.getStore().getStorageKey(event.getPlayer(), from);
+        String toKey = addon.getStore().getStorageKey(event.getPlayer(), to);
+        if (Objects.equals(fromKey, toKey)) {
             return;
         }
         addon.getStore().storeInventory(event.getPlayer(), from);

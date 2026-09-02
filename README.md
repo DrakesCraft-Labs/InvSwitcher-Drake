@@ -1,99 +1,87 @@
-# InvSwitcher
+<div align="center">
 
-World inventory switcher add-on for BentoBox. This add-on will work for any game modes.
+<img src="https://raw.githubusercontent.com/DrakesCraft-Labs/InvSwitcher-Drake/main/banner.svg" alt="InvSwitcher Drake Edition" width="100%">
 
-The following are switched per-world:
+# ✦ InvSwitcher · DrakesCraft Edition ✦
 
-* Inventory & armor
-* Advancements
-* Food level
-* Experience
-* Health
-* Enderchest contents
+### Hardened 5-Modality Inventory, EnderChest, Health & XP Isolation Engine for Paper/Purpur 1.21.11
 
-## How to use
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-7C4DFF?logo=minecraft&logoColor=white)](https://papermc.io/)
+[![Purpur](https://img.shields.io/badge/Purpur-1.21.11-FFA000?logo=purpur)](https://purpurmc.org/)
+[![Java](https://img.shields.io/badge/Java-21%2F25-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![License](https://img.shields.io/badge/License-GPL--3.0-blue)](./LICENSE)
+[![Zero-Leakage](https://img.shields.io/badge/Isolation-Zero--Leakage_5_Modes-10B981)](https://github.com/DrakesCraft-Labs/InvSwitcher-Drake)
+[![Network](https://img.shields.io/badge/Network-DrakesCraft_Production-00E5FF)](https://web.drakescraft.cl)
 
-1. Place the addon jar in the addons folder of the BentoBox plugin
-2. Restart the server
-3. Done!
-4. (Optional) If you would prefer to have achievements not broadcasted in your server chat when players change worlds, run the command `/gamerule announceAdvancements false` in-game, or in your server console by removing the "/" symbol. 
+**A hardened downstream fork of InvSwitcher for BentoBox on Paper/Purpur 1.21.11, providing airtight cross-modality inventory isolation across DrakesCraft's 5 game modes with zero item smuggling and zero Data Components corruption.**
 
-## Do not run two inventory managers
+[🌐 Portal Oficial](https://web.drakescraft.cl) ·
+[🎮 Jugar en Vivo](https://web.drakescraft.cl/play) ·
+[💬 Discord Oficial](https://discord.gg/rR7FbfCt9Y) ·
+[🏛️ Organización GitHub](https://github.com/DrakesCraft-Labs)
 
-InvSwitcher must be the only plugin managing per-world inventories. Running it alongside
-Multiverse-Inventories, PerWorldInventory, MultiInv or similar makes both plugins save and restore
-the player on every world change, and they overwrite each other's data.
+</div>
 
-The symptom is disappearing items: pick up an item on your island, go to the lobby, come back, and
-the island inventory is empty. Nothing appears in the console, because neither plugin is failing —
-each is faithfully saving a player state the other has already rewritten. The InvSwitcher version
-makes no difference, so if you are seeing this, look for a second inventory plugin first.
+---
 
-### Multiverse-Inventories
+> ### 🏰 ¡Únete a la Red Oficial de DrakesCraft!
+>
+> * 🎮 **IP del Servidor (Java & Bedrock):** `play.drakescraft.cl` *(Puerto Java: `25565` | Puerto Bedrock: `19132`)*
+> * 💬 **Discord de la Comunidad:** [discord.gg/drakescraft](https://discord.gg/rR7FbfCt9Y)
+> * 🌐 **Sitio Web:** [web.drakescraft.cl](https://web.drakescraft.cl) · 🛒 **Tienda Oficial:** [web.drakescraft.cl/store](https://web.drakescraft.cl/store.html)
 
-Two things commonly mislead admins:
+---
 
-* **Leaving the BentoBox worlds out of every inventory group does not help.** Groups control which
-  worlds *share* an inventory, not which worlds Multiverse-Inventories handles. It still writes a
-  per-world profile for a world that is in no group.
-* **`/mv remove <world>` does not help either.** Multiverse-Core re-registers BentoBox worlds as
-  they are created, so the removal is undone on the next restart. `auto-import-3rd-party-worlds:
-  false` does not prevent it — that only suppresses the import sweep run when Multiverse-Core
-  starts, which is before BentoBox has created its worlds.
+## 🙏 Reconocimiento y Agradecimientos a BentoBoxWorld
 
-Multiverse-Inventories has no config option to ignore a world, but it does have a bypass
-permission. Enable it in the Multiverse-Inventories `config.yml` (it ships as `false`):
+Queremos expresar nuestro más sincero y profundo agradecimiento a **tastybento** y a toda la **Comunidad de BentoBoxWorld** por haber creado y mantenido este add-on modular de gestión de inventarios. 
 
-```yml
-share-handling:
-  enable-bypass-permissions: true
+Este repositorio (`InvSwitcher-Drake`) es un fork downstream de fortificación y compatibilidad diseñado específicamente para cubrir las fronteras de aislamiento estricto de las 5 modalidades de **DrakesCraft**.
+
+---
+
+## 🌟 Fortificaciones de la Edición DrakesCraft
+
+### 1. 🛡️ Cierre de la Fuga de Mundos No-Isla (`Zero-Leakage`)
+* **Problema en Upstream:** InvSwitcher original ignoraba los cambios de mundo si ninguno de los dos mundos involucrados estaba registrado como una isla activa de BentoBox (`!addon.getWorlds().contains(from) && !addon.getWorlds().contains(to)`). Esto permitía que un jugador se teletransportara entre **Survival (`world`)** y **Clásico (`clasico`)** o **Laboratorio (`laboratorio`)** conservando sus ítems.
+* **Solución Drake:** Se rediseñó `PlayerListener.onWorldEnter` para evaluar los **Storage Keys** de destino y origen. Si el jugador cambia de grupo de modalidad, se fuerza el guardado y la carga inmediata del inventario correspondiente, impidiendo cualquier contrabando de ítems entre mundos.
+
+### 2. 🌐 Mapeo Nativo de las 5 Modalidades de DrakesCraft
+
+| Modalidad | Grupo de Mundos | Storage Key Asignado | Aislamiento Activo |
+| :--- | :--- | :--- | :--- |
+| 🛡️ **Survival Principal** | `world`, `world_nether`, `world_the_end` | `world` | Inventario, EnderChest, XP y Vida |
+| 📦 **OneBlock** | `oneblock_world`, `oneblock_world_nether`, `...` | `oneblock_world` | Inventario, EnderChest, XP y Vida |
+| ☁️ **SkyBlock** | `bskyblock_world`, `bskyblock_world_nether`, `...` | `bskyblock_world` | Inventario, EnderChest, XP y Vida |
+| 🌲 **Clásico Vainilla** | `clasico`, `clasico_nether`, `clasico_the_end` | `clasico` | Inventario, EnderChest, XP y Vida |
+| 🧪 **Laboratorio** | `laboratorio` | `laboratorio` | Inventario, EnderChest, XP y Vida |
+
+### 3. 💎 Integración con `BentoBox-Drake` (`Zero-Item-Loss`)
+* Plena compatibilidad con la deserialización nativa de Data Components en Paper 1.21.11, protegiendo charms de Slimefun, armaduras personalizadas y armas con atributos al guardar o restaurar inventarios.
+
+---
+
+## 📦 Compilación e Instalación
+
+### Compilar desde el Código Fuente
+```bash
+# Clonar el repositorio
+git clone https://github.com/DrakesCraft-Labs/InvSwitcher-Drake.git
+cd InvSwitcher-Drake
+
+# Compilar con Maven (Java 21+)
+mvn clean package
 ```
 
-Then grant `mvinv.bypass.world.<world>` for each BentoBox world — including its nether and end — to
-every player. With LuckPerms:
+El binario se generará en `target/InvSwitcher-*.jar`.
 
-```
-lp group default permission set mvinv.bypass.world.bskyblock_world true
-lp group default permission set mvinv.bypass.world.bskyblock_world_nether true
-lp group default permission set mvinv.bypass.world.bskyblock_world_the_end true
-```
+### Instalación en el Servidor
+1. Coloca `InvSwitcher.jar` en `/plugins/BentoBox/addons/`.
+2. Asegúrate de tener `BentoBox.jar` (Edición Drake) en `/plugins/`.
+3. Reinicia el servidor en la ventana de mantenimiento.
 
-Setting the nodes on a group every player inherits (such as `default`) covers new players
-automatically. Repeat for each game mode world you run.
+---
 
-**Operators do not get this permission automatically** — it has to be granted explicitly. Testing
-as an op without it looks exactly like the fix not working.
+## 📄 Licencia
 
-Use one node per world. Avoid `mvinv.bypass.world.*`, which switches Multiverse-Inventories off for
-every world, including the ones you still want it to manage.
-
-## Config.yml
-
-The config allows to define which worlds that InvSwitcher should operate, and what aspects should be kept separate.
-
-```
-# Worlds to operate. Nether and End worlds are automatically included.
-worlds:
-- acidisland_world
-- oneblock_world
-- boxed_world
-- bskyblock_world
-options:
-  # 
-  # Per-world settings. Gamemode means Survivial, Creative, etc.
-  inventory: true
-  health: true
-  food: true
-  advancements: true
-  gamemode: true
-  experience: true
-  location: true
-  ender-chest: true
-```
-
-## Commands
-
-There are no commands.
-
-## What it does
-This addon will give players a separate inventory, enderchest, health, food level, advancements and experience for each gamemode installed and their corresponding worlds. It enables players to play each gamemode independently of each other.
+Este proyecto está licenciado bajo la **GNU General Public License v3.0 (GPLv3)** en conformidad con el proyecto original de [BentoBoxWorld](https://github.com/BentoBoxWorld/InvSwitcher).

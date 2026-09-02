@@ -1,19 +1,11 @@
 # InvSwitcher Config
-# Worlds to operate. Nether and End worlds are automatically included.
+# Worlds to operate. Nether and End worlds (_nether, _the_end) are automatically included.
 worlds:
-- acidisland_world
+- world
 - oneblock_world
-- boxed_world
 - bskyblock_world
-- skyblock-world
-- caveblock-world
-- poseidon_world
-- stranger_world
-- skygrid-world
-- raft_world
-- brix_world
-- parkour_world
-- tradewinds_world
+- clasico
+- laboratorio
 options:
   # 
   # Per-world settings. Gamemode means Survivial, Creative, etc.
